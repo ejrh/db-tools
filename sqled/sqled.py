@@ -197,8 +197,9 @@ class MainFrame(wx.Frame):
         self.finddlg = None
         self.finddata = wx.FindReplaceData()
         self.finddata.SetFlags(wx.FR_DOWN)
-        
+
         params = {'dbname': 'DATABASE', 'host': 'HOST', 'user': 'USERNAME', 'password': 'PASSWORD'}
+
         self.db = pginterface.PGInterface(params)
         
         self.tree.populate(self.db)
