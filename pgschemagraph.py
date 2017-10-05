@@ -4,7 +4,7 @@ from xml.sax.saxutils import escape
 from optparse import OptionParser
 
 def connect(**params):
-    connstr = "dbname='%(dbname)s' user='%(user)s' host='%(host)s' password='%(password)s'" % params
+    connstr = "dbname='%(dbname)s' user='%(user)s' host='%(host)s' port='%(port)s' password='%(password)s'" % params
     conn = psycopg2.connect(connstr)
     return conn
 
@@ -193,10 +193,11 @@ def to_graphml(all_tables):
     return ''.join(parts)
 
 def main():
-    usage = """usage: %prog -h HOST -d DATBASE -u USER -p PASSWORD [-s SCHEMAS]"""
+    usage = """usage: %prog -h HOST -d DATABASE [-P PORT] -u USER [-p PASSWORD] [-s SCHEMAS]"""
     desc = """Generate GraphML schema diagrams for PostgreSQL databases."""
     parser = OptionParser(usage=usage, description=desc, add_help_option=False)
     parser.add_option("-h", "--host", action="store", help="server host name")
+    parser.add_option("-P", "--port", action="store", help="server port")
     parser.add_option("-d", "--database", action="store", help="database name")
     parser.add_option("-u", "--user", action="store", help="database user to login as")
     parser.add_option("-p", "--password", action="store", help="user's password")
@@ -210,10 +211,8 @@ def main():
         parser.error('database is required')
     if options.user is None:
         parser.error('user is required')
-    if options.password is None:
-        parser.error('password is required')
         
-    params = {'user': options.user, 'password': options.password, 'dbname': options.database, 'host': options.host}
+    params = {'user': options.user, 'password': options.password, 'dbname': options.database, 'host': options.host, 'port': options.port }
     schema_list = options.schemas.split(',')
     
     conn = connect(**params)
