@@ -219,7 +219,7 @@ def main():
     all_tables = get_tables(conn, schema_list)
     conn.close()
     
-    print to_graphml(all_tables)
+    print (to_graphml(all_tables))
 
 if __name__ == '__main__':
     main()
