@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 import psycopg2
 from xml.sax.saxutils import escape
@@ -196,8 +197,8 @@ def main():
     usage = """usage: %prog -h HOST -d DATABASE [-P PORT] -u USER [-p PASSWORD] [-s SCHEMAS]"""
     desc = """Generate GraphML schema diagrams for PostgreSQL databases."""
     parser = OptionParser(usage=usage, description=desc, add_help_option=False)
-    parser.add_option("-h", "--host", action="store", help="server host name")
-    parser.add_option("-P", "--port", action="store", help="server port")
+    parser.add_option("-h", "--host", action="store", default='localhost', help="server host name")
+    parser.add_option("-P", "--port", action="store", default='5432', help="server port")
     parser.add_option("-d", "--database", action="store", help="database name")
     parser.add_option("-u", "--user", action="store", help="database user to login as")
     parser.add_option("-p", "--password", action="store", help="user's password")
@@ -219,7 +220,8 @@ def main():
     all_tables = get_tables(conn, schema_list)
     conn.close()
     
-    print to_graphml(all_tables)
+    print(to_graphml(all_tables))
+
 
 if __name__ == '__main__':
     main()
